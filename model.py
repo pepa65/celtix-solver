@@ -75,11 +75,11 @@ def anti_loop_constraint(cross_vars, loop):
     # Collect expressions that would contradict the crossing decisions made before
     anti_loop = []
     for (x, y), (h, v) in cross_vars.items():
-        if h.x >= 0.99 and any(loop.issuperset(pair) for pair in get_matches(x, y, Orientation.horizontal)):
+        if h.x is not None and h.x >= 0.99 and any(loop.issuperset(pair) for pair in get_matches(x, y, Orientation.horizontal)):
             anti_loop.append(1 - h)
-        if v.x >= 0.99 and any(loop.issuperset(pair) for pair in get_matches(x, y, Orientation.vertical)):
+        if v.x is not None and v.x >= 0.99 and any(loop.issuperset(pair) for pair in get_matches(x, y, Orientation.vertical)):
             anti_loop.append(1 - v)
-        if h.x <= 0.01 and v.x <= 0.01 and any(loop.issuperset(pair) for pair in get_matches(x, y, None)):
+        if (h.x is None or h.x <= 0.01) and (v.x is None or v.x <= 0.01) and any(loop.issuperset(pair) for pair in get_matches(x, y, None)):
             anti_loop.append(h + v)
     # The new constraint requires at least one contradiction to the loop
     return mip.xsum(anti_loop) >= 1
@@ -92,9 +92,9 @@ def solve_puzzle(puzzle):
 
         walls = {}
         for (x, y), (h, v) in cross_vars.items():
-            if h.x >= 0.99:
+            if h.x is not None and h.x >= 0.99:
                 walls[(x, y)] = Orientation.horizontal
-            if v.x >= 0.99:
+            if v.x is not None and v.x >= 0.99:
                 walls[(x, y)] = Orientation.vertical
         print(f"Tentative solution with {len(walls)} walls")
 
