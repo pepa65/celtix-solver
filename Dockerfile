@@ -3,6 +3,8 @@
 # `docker run --rm -v .:/w -w /w celtix PUZZLE SOLUTION.png`
 # Replace `PUZZLE` with the name of your white-background Celtix screenshot.
 # When done, `SOLUTION.png` (pick any name for SOLUTION, defaults to `output`) will appear in the same directory.
+# Use this `celtix` alias for convenience:  celtix PUZZLE SOLUTON.png
+# alias celtix='docker run --rm -v .:/w -w /w celtix'
 
 FROM python:3.11-slim
 

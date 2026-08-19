@@ -33,5 +33,7 @@ And then either run the solver in a virtual environent, or use docker.
 * Run: `docker run --rm -v .:/w -w /w celtix PUZZLE SOLUTION`
   - Replace `PUZZLE` with a image file in the current tree (like `examples/puzzle3.png`)
   - Replace `SOLUTION` with a different name, or leave it off (it will default to `output.png`)
+* Use this `celtix` alias for convenience:  celtix PUZZLE SOLUTON.png
+  `alias celtix='docker run --rm -v .:/w -w /w celtix'`
 
 Wait for 1-10 minutes (or many hours) or so it finds a solution, and the image will appear.
