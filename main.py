@@ -7,7 +7,9 @@ from graphics import parse_image, draw_solution
 from textics import parse_csv_puzzle, print_solution
 
 
-if len(sys.argv) != 2 or not os.path.exists(sys.argv[1]):
+if len(sys.argv) > 1:
+    sys.argv[1] = f"/w/{sys.argv[1]}"
+if len(sys.argv) < 2 or not os.path.exists(sys.argv[1]):
     print(f"Usage: {sys.argv[0]} puzzle.file", file=sys.stderr)
     print(f"  The puzzle file can be either a PNG screenshot or CSV", file=sys.stderr)
     sys.exit(1)
@@ -30,4 +32,7 @@ else:
     solution = solve_puzzle(puzzle)
     print_solution(solution)
     drawn = draw_solution(image, grid, solution)
-    cv.imwrite("output.png", drawn)
+    out = f"/w/{sys.argv[2]}" if len(sys.argv) > 2 else "/w/output.png"
+    cv.imwrite(out, drawn)
+    stat = os.stat(sys.argv[1])
+    os.chown(out, stat.st_uid, stat.st_gid)

@@ -13,12 +13,7 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/*
 
 WORKDIR /d
-#RUN git clone https://github.com/amirlb/celtix-solver .
-#RUN sed -i 's/opencv/opencv-python/' requirements.txt
 RUN git clone https://github.com/pepa65/celtix-solver .
 RUN python3 -m venv .
 RUN bin/pip install -r requirements.txt
-RUN sed -i 's/if len(sys.argv) != 2/if len(sys.argv) > 1:\n    sys.argv[1] = f"\/w\/{sys.argv[1]}"\nif len(sys.argv) < 2/' main.py
-RUN sed -i 's/cv.imwrite("output.png", drawn)/out = f"\/w\/{sys.argv[2]}" if len(sys.argv) > 2 else "\/w\/output.png"\n    cv.imwrite(out, drawn)\n    stat = os.stat(sys.argv[1])\n    os.chown(out, stat.st_uid, stat.st_gid)/' main.py
-RUN cat main.py
 ENTRYPOINT ["/d/bin/python3", "/d/main.py"]

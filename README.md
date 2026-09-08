@@ -5,11 +5,7 @@
 * Repo: https://github.com/pepa65/celtix-solver
 * After: https://github.com/amirlb/celtix-solver
 
-Why would you want to do that? Are you trying to cheat your friends? Or do you want to spoil the puzzle for yourself?
-
-[Celtix](https://www.andrewt.net/puzzles/celtix/?p=3) is a fun new puzzle by [Andrew Taylor](https://www.andrewt.net/).
-
-[Amir] I've been wanting to learn to use OpenCV and Python MIP for a while, so here we go.
+Solving [Celtix](https://www.andrewt.net/puzzles/celtix/?p=3) puzzles (by [Andrew Taylor](https://www.andrewt.net/)).
 
 ## Usage instructions
 Take a screenshot (white background, so no Dark mode!), or use the one in the examples directory.
@@ -33,7 +29,7 @@ And then either run the solver in a virtual environent, or use docker.
 * Run: `docker run --rm -v .:/w -w /w celtix PUZZLE SOLUTION`
   - Replace `PUZZLE` with a image file in the current tree (like `examples/puzzle3.png`)
   - Replace `SOLUTION` with a different name, or leave it off (it will default to `output.png`)
-* Use this `celtix` alias for convenience:  celtix PUZZLE SOLUTON.png
-  `alias celtix='docker run --rm -v .:/w -w /w celtix'`
+* Use this `celtix` alias for convenience: `alias celtix='docker run --rm -v .:/w -w /w celtix'`
+  - It will allow: `celtix PUZZLE SOLUTON.png >LOG.log`
 
-Wait for 1-10 minutes (or many hours) or so it finds a solution, and the image will appear.
+Wait for 1-10 minutes (or many hours, or many days..!) until it finds a solution, and the image will appear.
