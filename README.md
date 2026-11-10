@@ -8,7 +8,7 @@
 Solving [Celtix](https://www.andrewt.net/puzzles/celtix/?p=3) puzzles (by [Andrew Taylor](https://www.andrewt.net/)).
 
 ## Usage instructions
-Take a screenshot (white background, so no Dark mode!), or use the one in the examples directory.
+Take a screenshot (white background and default pip colors), or use the one in the examples directory.
 
 ### Clone the repo
 ```
@@ -32,4 +32,4 @@ And then either run the solver in a virtual environent, or use docker.
 * Use this `celtix` alias for convenience: `alias celtix='docker run --rm -v .:/w -w /w celtix'`
   - It will allow: `celtix PUZZLE SOLUTON.png >LOG.log`
 
-Wait for 1-10 minutes (or many hours, or many days..!) until it finds a solution, and the image will appear.
+The solver writes the image after proving the minimum wall count. A difficult puzzle can take longer to prove.

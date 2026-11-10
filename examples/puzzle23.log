@@ -1,0 +1,23 @@
+Celtix puzzle, size 12x20
+  red: [(0, 1), (6, 4), (8, 3), (11, 4)]
+  blue: [(0, 5), (0, 6), (7, 4), (9, 0)]
+  purple: [(0, 13), (4, 4), (10, 13), (11, 10)]
+  green: [(4, 15), (6, 6), (6, 12), (8, 16)]
+  yellow: [(1, 18), (2, 17), (8, 14), (10, 15)]
+Tentative solution with 11 walls, excluding 4 invalid loops
+Tentative solution with 11 walls, excluding 2 invalid loops
+Tentative solution with 11 walls, excluding 2 invalid loops
+Tentative solution with 12 walls, excluding 2 invalid loops
+Solved with 12 walls:
+3,10,horizontal
+4,5,horizontal
+4,11,vertical
+5,0,vertical
+5,2,vertical
+5,6,horizontal
+6,17,horizontal
+7,12,horizontal
+8,3,horizontal
+8,7,horizontal
+8,13,horizontal
+10,11,horizontal

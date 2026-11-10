@@ -9,11 +9,12 @@
 FROM python:3.11-slim
 
 RUN apt-get update \
-	&& apt-get install -y python3-venv libgl1 libglib2.0-0 libsm6 libxext6 libxrender-dev git \
+	&& apt-get install -y python3-venv libgl1 libglib2.0-0 libsm6 libxext6 libxrender-dev \
 	&& rm -rf /var/lib/apt/lists/*
 
 WORKDIR /d
-RUN git clone https://github.com/pepa65/celtix-solver .
+COPY requirements.txt .
 RUN python3 -m venv .
 RUN bin/pip install -r requirements.txt
+COPY common.py graphics.py main.py model.py textics.py ./
 ENTRYPOINT ["/d/bin/python3", "/d/main.py"]

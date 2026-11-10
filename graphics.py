@@ -81,36 +81,36 @@ def find_grid(edges, rect):
     )
     return width, height, grid
 
-@dataclass
-class ColorGroup:
-    canonical: np.ndarray
-    variations: list[tuple[int, int, int]]
+# Default Celtix pip colors in OpenCV's BGR order.
+PIP_COLORS = {
+    "red": (0, 0, 255),
+    "blue": (255, 0, 0),
+    "purple": (255, 0, 204),
+    "green": (0, 204, 0),
+    "yellow": (0, 221, 238),
+}
+PIP_COLOR_DISTANCE = 110
 
-    @classmethod
-    def create(cls, color):
-        return cls(np.array(color, dtype=float), [color])
 
-    def contains(self, color):
-        return np.sum((self.canonical - color) ** 2) < 100
+def find_pips(image, grid, width, height):
+    names = list(PIP_COLORS)
+    pips = {color: [] for color in names}
+    palette = np.array(list(PIP_COLORS.values()), dtype=np.int32)
+    for x in range(width):
+        for y in range(height):
+            pixel = image[grid.apply(x, y)[::-1]]
+            distances = np.sum((palette - pixel) ** 2, axis=1)
+            index = distances.argmin()
+            if distances[index] < PIP_COLOR_DISTANCE ** 2:
+                pips[names[index]].append((x, y))
 
-    def best_name(self):
-        avg_color = np.mean(self.variations, axis=0)
-        return "color_{2:02x}{1:02x}{0:02x}".format(*map(round, avg_color))
+    # JPEG artifacts shift pip colors and can turn pastel ribbons into rare
+    # shades. Reject ambiguous screenshots before solving the wrong puzzle.
+    if any(len(points) != 4 for points in pips.values()):
+        counts = ", ".join(f"{color}={len(points)}" for color, points in pips.items())
+        raise ValueError(f"Expected four pips of each default color ({counts}). Use a clear screenshot or CSV.")
+    return pips
 
-def non_common_colors(colors):
-    groups = []
-    for color in colors:
-        for group in groups:
-            if group.contains(color):
-                group.variations.append(color)
-                break
-        else:
-            groups.append(ColorGroup.create(color))
-    return {
-        variation: group.best_name()
-        for group in groups if len(group.variations) < 10
-        for variation in group.variations
-    }
 
 def parse_image(image):
     image = cv.GaussianBlur(image, (5, 5), 0)
@@ -121,16 +121,7 @@ def parse_image(image):
     ).astype(int) // 255
     rect = find_board(edges)
     width, height, grid = find_grid(edges, rect)
-    colors = {
-        (x, y): tuple(image[grid.apply(x, y)[::-1]])
-        for x in range(width) for y in range(height)
-    }
-    pip_colors = non_common_colors(colors.values())
-    pips = {
-        color_name: [pt for pt, color in colors.items() if pip_colors.get(color) == color_name]
-        for color_name in set(pip_colors.values())
-    }
-    return Puzzle(width, height, pips), grid
+    return Puzzle(width, height, find_pips(image, grid, width, height)), grid
 
 def to_faded_grayscale(image):
     # There's got to be a better way...
@@ -147,5 +138,6 @@ def draw_solution(image, grid, solution):
             dx, dy = 0.0, 0.3
         x1, y1 = grid.apply(wall.x + 0.5 - dx, wall.y + 0.5 - dy)
         x2, y2 = grid.apply(wall.x + 0.5 + dx, wall.y + 0.5 + dy)
-        cv.line(output, (x1, y1), (x2, y2), (0, 0, 255), 3)
+        #cv.line(output, (x1, y1), (x2, y2), (0, 0, 255), 3)
+        cv.line(output, (x1, y1), (x2, y2), (255, 0, 0), 7)
     return output
